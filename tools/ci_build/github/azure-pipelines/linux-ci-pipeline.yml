@@ -24,7 +24,7 @@ jobs:
       script: |
         set -e -x
         mkdir -p $HOME/.onnx
-        az login --identity
+        az login --identity --username d1c41439-486c-4110-9052-d97199c8aa78
         az acr login -n onnxruntimebuildcache
         export DOCKER_BUILDKIT=1
         pushd .
