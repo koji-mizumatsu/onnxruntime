@@ -18,18 +18,18 @@ jobs:
       versionSpec: '3.8'
       addToPath: true
 
-  - template: templates/get-docker-image-steps.yml
-    parameters:
-      Dockerfile: tools/ci_build/github/linux/docker/Dockerfile.manylinux2014_cpu
-      Context: tools/ci_build/github/linux/docker
-      DockerBuildArgs: "--build-arg BUILD_UID=$( id -u )"
-      Repository: onnxruntimecpubuild
-
   - task: CmdLine@2
     displayName: 'build'
     inputs:
       script: |
+        set -e -x
         mkdir -p $HOME/.onnx
+        az login --identity
+        az acr login -n onnxruntimebuildcache
+        export DOCKER_BUILDKIT=1
+        pushd .
+        cd $(Build.SourcesDirectory)/tools/ci_build/github/linux/docker
+        docker build --tag onnxruntimebuildcache.azurecr.io:onnxruntimecpubuild --cache-from onnxruntimebuildcache.azurecr.io:onnxruntimecpubuild --build-arg BUILDKIT_INLINE_CACHE=1 -f Dockerfile.manylinux2014_cpu
         docker run --rm \
           --volume /data/onnx:/data/onnx:ro \
           --volume $(Build.SourcesDirectory):/onnxruntime_src \
