@@ -29,7 +29,7 @@ jobs:
         export DOCKER_BUILDKIT=1
         pushd .
         cd $(Build.SourcesDirectory)/tools/ci_build/github/linux/docker
-        docker build --tag onnxruntimecpubuild --cache-from onnxruntimebuildcache.azurecr.io:onnxruntimecpubuild --build-arg BUILDKIT_INLINE_CACHE=1 -f Dockerfile.manylinux2014_cpu .
+        docker build --tag onnxruntimecpubuild --cache-from onnxruntimebuildcache.azurecr.io/onnxruntimecpubuild:latest --build-arg BUILDKIT_INLINE_CACHE=1 -f Dockerfile.manylinux2014_cpu .
         docker run --rm \
           --volume /data/onnx:/data/onnx:ro \
           --volume $(Build.SourcesDirectory):/onnxruntime_src \
