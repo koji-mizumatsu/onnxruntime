@@ -647,6 +647,9 @@ class ONNXQuantizer:
             zero_point_values = [use_zeropoint]
             scale_values = [use_scale]
 
+            for i, scale in enumerate(scale_values):
+                scale_values[i] = np.power(2, np.trunc(np.log2(scale)))
+
         zero_point_shape = []
         zero_point_name = param_name + "_zero_point"
         zero_point_type = self.input_qType

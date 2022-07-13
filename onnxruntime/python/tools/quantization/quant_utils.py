@@ -149,6 +149,7 @@ def compute_scale_zp(rmin, rmax, qmin, qmax, symmetric=False):
 
     scale = (rmax - rmin) / float(qmax - qmin) if rmax != rmin else 1.0
     zero_point = round(qmin - rmin / scale)
+    scale = numpy.power(2, numpy.trunc(numpy.log2(scale)))
 
     return [zero_point, scale]
 
